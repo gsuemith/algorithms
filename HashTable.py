@@ -7,23 +7,33 @@ class Node:
 class LinkedList:
   def __init__(self):
     self.head = None
+    self.length = 0
 
   def add(self, newNode):
     if self.head is None:
       self.head = newNode
+      self.length = 1
       return
 
     node = self.head
 
     while node.next is not None:
+      if node.key == newNode.key:
+        node.value = newNode.value
+        return
       node = node.next
 
+    if node.key == newNode.key:
+        node.value = newNode.value
+        return
     node.next = newNode
+    self.length += 1
 
   def pop(self):
     node = self.head
     self.head = node.next
     node.next = None
+    self.length -= 1
     return node
     
 
@@ -68,10 +78,29 @@ class HashTable:
       while ll.head is not None:
         node = ll.pop()
         self.add(node.key, node.value)
+  
+  def has(self, key):
+    pos = hash(key) % self.size
+    ll = self.array[pos]
+    if ll.length == 0:
+      return False
 
-    print(self.size, self.numItems)
+    node = ll.head
+    while node is not None:
+      if node.key == key:
+        return True
+      node = node.next
+
+    return False
+
+
+    
 
 ht = HashTable()
 
-for char in "abcdefghijklmnopqrstuvwxyz":
-  ht.add(char, "value: " + char)
+ht.add("key", "value")
+print(ht.get("key"))
+ht.add("key", "newValue")
+print(ht.get("key"))
+print(ht.has("key"))
+print(ht.has("key1"))
